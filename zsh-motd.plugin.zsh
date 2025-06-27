@@ -20,8 +20,11 @@ REMOTE_IP=$(echo "$LAST_LOGIN_INFO" | awk '{print $3}')
 
 # 读取上次登录完整时间，过滤掉wtmp头信息
 LAST_LOGIN_LINE=$(last -F -n 1 "$USER" | grep -v 'wtmp begins' | head -n 1)
-LAST_LOGIN=$(echo "$LAST_LOGIN_LINE" | awk '{for(i=4;i<=8;i++) printf "%s ", $i}')
-LAST_LOGIN=$(echo "$LAST_LOGIN" | xargs)
+LAST_LOGIN=$(echo "$LAST_LOGIN_LINE" | awk '{for(i=4;i<=8;i++) printf "%s ", $i}' | xargs)
+# 使用date命令格式化时间 (方法1)
+FORMATTED_LOGIN=$(date -d "$LAST_LOGIN" +"%Y-%m-%d %H:%M:%S" 2>/dev/null)
+# 如果date命令失败(某些系统不支持-d参数)，则保留原始格式
+LAST_LOGIN=${FORMATTED_LOGIN:-$LAST_LOGIN}
 
 LOAD_RAW=$(uptime | awk -F'load average:' '{print $2}' | sed 's/^ //')
 UPTIME_SEC=$(awk '{print int($1)}' /proc/uptime)
