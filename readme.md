@@ -4,14 +4,14 @@
 
 ```bash
 # 创建文件夹
-mkdir -p ~/.oh-my-zsh/custom/plugins/welcome-info
+mkdir -p ~/.oh-my-zsh/custom/plugins/zsh-motd
 # 编辑文件
-vim ~/.oh-my-zsh/custom/plugins/welcome-info/welcome-info.plugin.zsh
+vim ~/.oh-my-zsh/custom/plugins/zsh-motd/zsh-motd.plugin.zsh
 # 授权
-chmod +x ~/.oh-my-zsh/custom/plugins/welcome-info/welcome-info.plugin.zsh
+chmod +x ~/.oh-my-zsh/custom/plugins/zsh-motd/zsh-motd.plugin.zsh
 ```
 
-## 2. welcome-info.plugin.zsh 内容（示例）
+## 2. zsh-motd.plugin.zsh 内容（示例）
 
 ```bash
 #!/bin/bash
@@ -97,10 +97,10 @@ done <<< "$INTERFACES"
 
 ## 3. 启用插件
 
-编辑 `~/.zshrc`，找到 `plugins` 行，添加 `welcome-info`：
+编辑 `~/.zshrc`，找到 `plugins` 行，添加 `zsh-motd`：
 
 ```zsh
-plugins=(git welcome-info)
+plugins=(git zsh-motd)
 ```
 
 然后保存并重载配置：
