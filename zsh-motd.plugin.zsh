@@ -13,6 +13,11 @@ IP=$(hostname -I | awk '{print $1}')
 KERNEL=$(uname -r)
 USER=$(whoami)
 
+# 获取最后登录信息（包含远程IP）
+LAST_LOGIN_INFO=$(last -F -n 1 "$USER" | grep -v 'wtmp begins' | head -n 1)
+LAST_LOGIN_TIME=$(echo "$LAST_LOGIN_INFO" | awk '{for(i=4;i<=8;i++) printf "%s ", $i}' | xargs)
+REMOTE_IP=$(echo "$LAST_LOGIN_INFO" | awk '{print $3}')
+
 # 读取上次登录完整时间，过滤掉wtmp头信息
 LAST_LOGIN_LINE=$(last -F -n 1 "$USER" | grep -v 'wtmp begins' | head -n 1)
 LAST_LOGIN=$(echo "$LAST_LOGIN_LINE" | awk '{for(i=4;i<=8;i++) printf "%s ", $i}')
@@ -64,7 +69,7 @@ echo -e "🧮 CPU信息    : ${CPU_MODEL} (${CPU_CORES} 核心)"
 echo -e "📈 系统负载   : 1分: ${LOAD1} | 5分: ${LOAD5} | 15分: ${LOAD15}"
 echo -e "⏱️ 运行时长   : ${UPTIME_FMT}"
 echo -e "👥 会话数     : ${LOGIN_SESSIONS}   🧵 进程数: ${PROCESS_COUNT}"
-echo -e "🔐 上次登录   : ${LAST_LOGIN} from ${IP}"
+echo -e "🔐 上次登录   : ${LAST_LOGIN}  ${REMOTE_IP} -> ${IP}"
 
 # 网络接口信息（移除MAC地址，仅显示接口名 + IP）
 echo -e "${GREEN}🌐 活跃网络接口:${NC}"
